@@ -1,0 +1,19 @@
+.filter {
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+    width: 300px;
+    gap: 10px;
+}
+
+.filterInput {
+    border: 1px solid gray;
+    border-radius: 5px;
+    padding: 10px;
+    font-family: inherit;
+    font-size: 16px;
+}
+
+h3 {
+    color: rgb(9, 7, 10);
+}
