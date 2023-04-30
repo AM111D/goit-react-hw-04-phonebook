@@ -1,44 +1,47 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import ContactList from './ContactList/ContactList';
 import ContactForm from './ContactForm/ContactForm';
 import Filter from './Filter/Filter';
 import { nanoid } from 'nanoid';
 
 function App() {
-  state = {
-    contacts: [],
-    filter: '',
-  };
+  const [contacts, setContacts] = useState([]);
+  const [filter, setFilter] = useState('');
 
-  addContact = (name, number) => {
+  const addContact = (name, number) => {
     let contactId = nanoid();
-    let contacts = [...this.state.contacts];
-    const names = contacts.map(contact => contact.name);
+    const currentContacts = [...contacts];
+    const names = currentContacts.map(contact => contact.name);
     console.log(names);
 
     if (!names.find(el => el === name)) {
-      contacts = [...contacts, { id: contactId, name: name, number: number }];
-      this.setState({
-        contacts,
-      });
+      setContacts([
+        ...currentContacts,
+        { id: contactId, name: name, number: number },
+      ]);
+      // setContacts(contacts);
     } else {
       alert(`${name} is already in contacts`);
     }
   };
 
-  deleteContact = id => {
-    const contacts = [...this.state.contacts];
-    const index = contacts.findIndex(person => person.id === id);
-    contacts.splice(index, 1);
-    this.setState({
-      contacts,
-    });
+  const deleteContact = id => {
+    const currentContacts = [...contacts];
+    const index = currentContacts.findIndex(person => person.id === id);
+    currentContacts.splice(index, 1);
+    setContacts(currentContacts);
   };
 
-  handleFilter = e => {
-    this.setState({
-      filter: e.target.value,
-    });
+  const handleFilter = e => {
+    setFilter(e.target.value);
+  };
+
+  const filteredList = () => {
+    return contacts.filter(
+      contact =>
+        filter === '' ||
+        contact.name.toLowerCase().includes(filter.toLowerCase())
+    );
   };
 
   // componentDidMount() {
@@ -68,13 +71,10 @@ function App() {
   return (
     <div style={{ marginLeft: '50px' }}>
       <h1>Phonebook</h1>
-      <ContactForm
-        addContact={this.addContact}
-        deleteContact={this.deleteContact}
-      />
+      <ContactForm addContact={addContact} deleteContact={deleteContact} />
       <h1>Contacts</h1>
-      <Filter change={this.handleFilter} value={filter} />
-      <ContactList list={list} deleteContact={this.deleteContact} />
+      <Filter change={handleFilter} value={filter} />
+      <ContactList list={filteredList()} deleteContact={deleteContact} />
     </div>
   );
 }
