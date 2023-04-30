@@ -9,6 +9,8 @@ function ContactForm(props) {
   const handleSubmit = e => {
     e.preventDefault();
     props.addContact(name, number);
+    setName('');
+    setNumber('');
   };
 
   const handleChange = e => {

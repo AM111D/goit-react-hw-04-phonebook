@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ContactList from './ContactList/ContactList';
 import ContactForm from './ContactForm/ContactForm';
 import Filter from './Filter/Filter';
@@ -44,29 +44,16 @@ function App() {
     );
   };
 
-  // componentDidMount() {
-  //   const storageContacts = JSON.parse(localStorage.getItem('contacts'));
-  //   if (storageContacts) {
-  //     this.setState({
-  //       contacts: storageContacts,
-  //     });
-  //   }
-  // }
+  const storageContacts = JSON.parse(localStorage.getItem('contacts')) || [];
 
-  // componentDidUpdate(prevState) {
-  //   if (this.state.contacts !== prevState.contacts) {
-  //     localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
-  //   }
-  // }
+  useEffect(() => {
+    console.log('Mouting phase: same when componentDidMount runs');
+    setContacts(storageContacts);
+  }, []);
 
-  // render() {
-  //   const { filter, contacts } = this.state;
-
-  //   const list = contacts.filter(
-  //     contact =>
-  //       this.state.filter === '' ||
-  //       contact.name.toLowerCase().includes(this.state.filter.toLowerCase())
-  //   );
+  useEffect(() => {
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
 
   return (
     <div style={{ marginLeft: '50px' }}>
